@@ -1,0 +1,88 @@
+name: Build and Deploy ForexFactory ICS Calendar
+
+on:
+  schedule:
+    # Run every Monday at 01:10 UTC (start of week)
+    - cron: '10 1 * * 1'
+    # Run daily at 01:10 UTC to catch updates
+    - cron: '10 1 * * *'
+  
+  # Allow manual triggering
+  workflow_dispatch:
+  
+  # Run on push to main for testing
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests beautifulsoup4 pytz lxml
+    
+    - name: Create public directory
+      run: mkdir -p public
+    
+    - name: Run ForexFactory scraper
+      env:
+        FF_IANA_TZ: ${{ vars.FF_IANA_TZ || 'Asia/Bangkok' }}
+        FF_IMPACT_KEEP: ${{ vars.FF_IMPACT_KEEP || 'LOW,MEDIUM,HIGH' }}
+        FF_CURR_KEEP: ${{ vars.FF_CURR_KEEP || 'USD' }}
+        FF_MONTH_PARAM: ${{ vars.FF_MONTH_PARAM || 'this' }}
+        FF_CAL_TITLE: ${{ vars.FF_CAL_TITLE || 'Economic Calendar' }}
+        FF_EVENT_MIN: ${{ vars.FF_EVENT_MIN || '30' }}
+      run: |
+        python forex_factory_to_ics.py
+    
+    - name: Verify ICS file
+      run: |
+        if [ ! -f public/calendar.ics ]; then
+          echo "Error: calendar.ics not generated"
+          exit 1
+        fi
+        
+        echo "Calendar file size: $(wc -c < public/calendar.ics) bytes"
+        echo "Number of events: $(grep -c 'BEGIN:VEVENT' public/calendar.ics || echo 0)"
+        
+        # Show first few lines for debugging
+        echo "First 20 lines of calendar.ics:"
+        head -20 public/calendar.ics
+    
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+    
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: './public'
+    
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
+    
+    - name: Log deployment info
+      run: |
+        echo "Deployment successful!"
+        echo "Calendar URL: ${{ steps.deployment.outputs.page_url }}calendar.ics"
+        echo "Web interface: ${{ steps.deployment.outputs.page_url }}calendar.html"
