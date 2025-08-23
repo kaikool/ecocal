@@ -47,6 +47,14 @@ jobs:
 
       - name: Build ICS
         run: npm run build:ics
+      - name: Make simple index.html
+        run: |
+          echo "<h1>ecocal</h1><ul>" > out/index.html
+          for f in out/*.ics; do
+            bn=$(basename "$f")
+            echo "<li><a href=\"$bn\">$bn</a></li>" >> out/index.html
+          done
+          echo "</ul>" >> out/index.html
 
       - name: Sanity checks
         run: |
