@@ -27,7 +27,6 @@ const FLAGS = [
 ];
 
 function ensureDir(p) { if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true }); }
-
 function impactNormalize(s) {
   const t = (s || '').toLowerCase();
   if (t.includes('high')) return 'HIGH';
@@ -54,18 +53,15 @@ function monthList() {
 }
 
 async function humanize(page) {
-  // Chọc nhẹ: di chuột, cuộn xuống, chờ ngẫu nhiên
   await page.mouse.move(100 + Math.random() * 300, 100 + Math.random() * 200);
   await page.waitForTimeout(500 + Math.floor(Math.random() * 500));
-  // cuộn vài nhịp
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 6; i++) {
     await page.mouse.wheel(0, 500 + Math.floor(Math.random() * 400));
-    await page.waitForTimeout(400 + Math.floor(Math.random() * 400));
+    await page.waitForTimeout(400 + Math.floor(Math.random() * 500));
   }
 }
 
 async function tryDismissBanners(page) {
-  // Cookie / consent nút phổ biến
   const candidates = [
     'button:has-text("Accept")',
     'button:has-text("I Accept")',
@@ -73,13 +69,11 @@ async function tryDismissBanners(page) {
     'button:has-text("Got it")',
     'text=Accept all',
     '[aria-label*="accept"]',
-    '[data-testid*="accept"]'
+    '[data-testid*="accept"]',
   ];
   for (const sel of candidates) {
     const el = await page.$(sel);
-    if (el) {
-      try { await el.click({ timeout: 1000 }); } catch {}
-    }
+    if (el) { try { await el.click({ timeout: 800 }); } catch {} }
   }
 }
 
@@ -90,14 +84,14 @@ async function gotoSafe(page, url) {
       await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
       await tryDismissBanners(page);
       await humanize(page);
-      // không ép buộc selector cụ thể nữa → tin vào fallback parser
-      return;
+      // KHÔNG chờ selector nào nữa
+      return true;
     } catch (e) {
       console.warn(`goto attempt ${a} failed: ${e.message}`);
-      if (a === 3) throw e;
       await page.waitForTimeout(1000 * a + Math.floor(Math.random() * 500));
     }
   }
+  return false;
 }
 
 // Parser lỏng — dựa trên văn bản, ít phụ thuộc class
@@ -114,7 +108,6 @@ async function extractLooseByText(page, params) {
       /\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/i.test(txt) &&
       /\b(january|february|march|april|may|june|july|august|september|october|november|december)\b/i.test(txt);
 
-    // gom tất cả block có chữ
     const blocks = Array.from(document.querySelectorAll('table tr, section, article, div, li'));
     for (const el of blocks) {
       const raw = (el.textContent || '').replace(/\s+/g, ' ').trim();
@@ -126,9 +119,7 @@ async function extractLooseByText(page, params) {
         if (m) {
           const mm = months[m[2].toLowerCase()];
           const dd = parseInt(m[3], 10);
-          if (mm) {
-            currentDate = new Date(Date.UTC(parseInt(ctx.year, 10), mm - 1, dd, 0, 0, 0));
-          }
+          if (mm) currentDate = new Date(Date.UTC(parseInt(ctx.year, 10), mm - 1, dd, 0, 0, 0));
         }
         continue;
       }
@@ -144,13 +135,9 @@ async function extractLooseByText(page, params) {
         let currency = curMatch[1];
 
         // Tách title thô bằng cách cắt bỏ time và currency đầu tiên
-        let title = raw;
-        title = title.replace(timeStr, '').replace(currency, '').trim();
-        // cắt phần sau các label phổ biến
+        let title = raw.replace(timeStr, '').replace(currency, '').trim();
         const cutIdx = title.search(/\b(Previous|Forecast|Actual|Detail|Source)\b/i);
         if (cutIdx > 0) title = title.slice(0, cutIdx).trim();
-
-        // bỏ các block vô nghĩa (quá ngắn)
         if (!title || title.length < 3) continue;
 
         out.push({
@@ -170,7 +157,6 @@ async function extractLooseByText(page, params) {
   ensureDir(OUTPUT_DIR);
 
   const browser = await chromium.launch({ headless: true, args: FLAGS });
-  // Persistent-ish context + stealth init
   const context = await browser.newContext({
     timezoneId: TZ,
     locale: 'en-US',
@@ -181,9 +167,7 @@ async function extractLooseByText(page, params) {
       'Upgrade-Insecure-Requests': '1'
     }
   });
-
   await context.addInitScript(() => {
-    // stealthy bits
     Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
     window.chrome = { runtime: {} };
     Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en'] });
@@ -198,16 +182,18 @@ async function extractLooseByText(page, params) {
   for (const m of months) {
     const url = `https://www.forexfactory.com/calendar?month=${m.y}-${m.m}`;
     console.log('⏩ Go', url);
-    await gotoSafe(page, url);
+    const ok = await gotoSafe(page, url);
+    if (!ok) {
+      console.warn(`Skip ${m.y}-${m.m} due to navigation issues.`);
+      continue;
+    }
 
     // cuộn thêm để chắc chắn render hết
     await humanize(page);
 
-    // chỉ còn 1 parser lỏng để tránh lệ thuộc class
-    let raw = await extractLooseByText(page, { year: m.y, tz: TZ });
+    const raw = await extractLooseByText(page, { year: m.y, tz: TZ });
     console.log(`Parsed (loose) ${raw.length} rows for ${m.y}-${m.m}`);
 
-    // Nếu rỗng, in 1000 ký tự đầu HTML để debug anti-bot/blank
     if (!raw || raw.length === 0) {
       const html = await page.content();
       console.log('---- PAGE HTML (first 1000 chars) ----');
@@ -215,7 +201,6 @@ async function extractLooseByText(page, params) {
       console.log('--------------------------------------');
     }
 
-    // chuyển về Luxon + lọc
     for (const r of raw) {
       const currency = (r.currency || '').toUpperCase();
       if (!CURRENCIES.includes(currency)) continue;
@@ -223,7 +208,6 @@ async function extractLooseByText(page, params) {
       const impact = impactNormalize(r.impactRaw || '');
       if (impact !== 'UNKNOWN' && !IMPACTS.includes(impact)) continue;
 
-      // r.timeStr + r.dateISO => build start (TZ Asia/Bangkok)
       const base = DateTime.fromISO(r.dateISO, { zone: 'UTC' }).setZone(TZ);
       let start;
       if (/all\s*day/i.test(r.timeStr) || r.timeStr === '-' || !r.timeStr) {
@@ -247,14 +231,13 @@ async function extractLooseByText(page, params) {
       });
     }
 
-    // nghỉ ngẫu nhiên giữa các tháng
-    await page.waitForTimeout(1200 + Math.floor(Math.random() * 1200));
+    await page.waitForTimeout(1000 + Math.floor(Math.random() * 1000));
   }
 
-  // dedupe + sort
   const uniq = dedupeByKey(all, x => `${x.startISO}__${x.currency}__${x.title}`);
   uniq.sort((a, b) => (a.startISO || '').localeCompare(b.startISO));
 
+  ensureDir(OUTPUT_DIR);
   const outJson = path.join(OUTPUT_DIR, 'forexfactory.json');
   fs.writeFileSync(outJson, JSON.stringify(uniq, null, 2), 'utf8');
   console.log(`✅ Saved ${uniq.length} events -> ${outJson}`);
