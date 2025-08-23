@@ -1,0 +1,48 @@
+name: FF Weekly
+
+on:
+  schedule:
+    - cron: "0 23 * * 0"   # 06:00 Monday Asia/Bangkok (UTC+7)
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      TZ: Asia/Bangkok
+      FF_CURRENCIES: USD
+      FF_IMPACTS: LOW,MEDIUM,HIGH
+      FF_MONTHS_AHEAD: "1"
+      OUTPUT_DIR: out
+      GH_REPO: kaikool/ecocal
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps
+        run: |
+          npm ci
+          npx playwright install --with-deps
+
+      - name: Run scraper (Playwright)
+        run: |
+          node scripts/scrape.js
+        env:
+          FLAGS: "--no-sandbox --disable-dev-shm-usage"
+
+      - name: Build ICS
+        run: npm run build:ics
+
+      - name: Sanity checks
+        run: |
+          test -s out/forexfactory.json
+          grep -q "BEGIN:VCALENDAR" out/*.ics
+
+      - name: Publish to gh-pages
+        run: bash ./publish-ghpages.sh
