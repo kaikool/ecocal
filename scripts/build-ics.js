@@ -11,7 +11,7 @@ const CURRENCIES = (process.env.FF_CURRENCIES || 'USD')
   .map(s => s.trim().toUpperCase())
   .filter(Boolean);
 
-// Đọc dữ liệu đã chuẩn hoá từ pull-ff-xml (hoặc scraper)
+// Đọc dữ liệu JSON đã chuẩn hóa
 const dataPath = path.join(OUTPUT_DIR, 'forexfactory.json');
 if (!fs.existsSync(dataPath)) {
   console.error('Missing forexfactory.json. Run the feed pull step first.');
@@ -23,34 +23,50 @@ if (!Array.isArray(data) || data.length === 0) {
   process.exit(2);
 }
 
+// map impact -> dot notation
+function impactDots(impact) {
+  switch ((impact || '').toUpperCase()) {
+    case 'LOW': return '•';
+    case 'MEDIUM': return '••';
+    case 'HIGH': return '•••';
+    default: return '';
+  }
+}
+
 for (const cur of CURRENCIES) {
-  // Lịch đặt timezone = UTC để client tự chuyển về local (GMT+7 hay gì khác)
+  // Calendar ở UTC
   const cal = ical({
     name: `ForexFactory ${cur}`,
-    timezone: 'UTC',         // <- Quan trọng: dùng UTC
-    prodId: { company: 'ecocal', product: 'ff-ics', language: 'EN' }
+    timezone: 'UTC',
+    prodId: { company: 'Forex Factory', product: 'ff-ics', language: 'EN' }
   });
 
   const items = data.filter(x => (x.currency || '').toUpperCase() === cur);
   for (const ev of items) {
-    // Ép mốc thời gian về UTC
-    const startUtc = DateTime.fromISO(ev.startISO, { setZone: true }).toUTC(); // giữ nguyên instant, convert sang UTC
-
+    const startUtc = DateTime.fromISO(ev.startISO, { setZone: true }).toUTC();
     if (!startUtc.isValid) continue;
+
     const uid = `${startUtc.toISO()}__${cur}__${slugify(ev.title || '', { lower: true, strict: true })}@ecocal`;
+
+    // Summary: chỉ tên sự kiện, không prefix/suffix
+    const summary = ev.title || '';
+
+    // Description: chấm tròn + Impact + Source
+    const dots = impactDots(ev.impact);
+    const desc = `${dots ? `Impact: ${dots}\n` : ''}Source: Forex Factory`;
 
     cal.createEvent({
       id: uid,
       uid,
       start: startUtc.toJSDate(),
       end: startUtc.plus({ minutes: 30 }).toJSDate(),
-      summary: `[${cur}] ${ev.title}${ev.impact && ev.impact !== 'UNKNOWN' ? ' (' + ev.impact + ')' : ''}`,
-      description: `Source: ${ev.source || 'ForexFactory'}\nTime base: UTC\nOriginal TZ: ${ev.tz || 'unknown'}`,
+      summary,
+      description: desc,
       timezone: 'UTC'
     });
   }
 
   const icsPath = path.join(OUTPUT_DIR, `forexfactory_${cur.toLowerCase()}.ics`);
   fs.writeFileSync(icsPath, cal.toString(), 'utf8');
-  console.log(`📝 Wrote ${icsPath} with ${items.length} events (UTC)`);
+  console.log(`📝 Wrote ${icsPath} with ${items.length} events (UTC, simplified summary)`);
 }
