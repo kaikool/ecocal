@@ -2,22 +2,23 @@ name: FF Weekly
 
 on:
   schedule:
-    - cron: "0 23 * * 0"   # 06:00 Monday Asia/Bangkok (UTC+7)
+    - cron: "0 23 * * 0"   # 06:00 Thứ Hai Asia/Bangkok (UTC+7)
   workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   run:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     env:
       TZ: Asia/Bangkok
       FF_CURRENCIES: USD
       FF_IMPACTS: LOW,MEDIUM,HIGH
       FF_MONTHS_AHEAD: "1"
       OUTPUT_DIR: out
-      GH_REPO: kaikool/ecocal
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -25,14 +26,17 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install deps
+      - name: Install deps (works with or without lockfile)
         run: |
-          npm install
+          if [ -f package-lock.json ]; then
+            npm ci --no-fund --no-audit
+          else
+            npm install --no-fund --no-audit
+          fi
           npx playwright install --with-deps
 
       - name: Run scraper (Playwright)
-        run: |
-          node scripts/scrape.js
+        run: node scripts/scrape.js
         env:
           FLAGS: "--no-sandbox --disable-dev-shm-usage"
 
@@ -44,5 +48,12 @@ jobs:
           test -s out/forexfactory.json
           grep -q "BEGIN:VCALENDAR" out/*.ics
 
-      - name: Publish to gh-pages
-        run: bash ./publish-ghpages.sh
+      # Deploy Pages (no gh-pages branch needed)
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
