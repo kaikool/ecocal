@@ -21,28 +21,29 @@ jobs:
       TZ: Asia/Bangkok
       FF_CURRENCIES: USD
       FF_IMPACTS: LOW,MEDIUM,HIGH
-      FF_MONTHS_AHEAD: "1"
       OUTPUT_DIR: out
+      # Tuỳ chọn: có thể thay bằng CSV/JSON nếu thích
+      FF_FEED_URL: https://nfs.faireconomy.media/ff_calendar_thisweek.xml
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
-        with:
-          node-version: 20
+        with: { node-version: 20 }
 
-      - name: Install deps (lockfile-agnostic)
+      - name: Install deps
         run: |
           if [ -f package-lock.json ]; then
             npm ci --no-fund --no-audit
           else
             npm install --no-fund --no-audit
           fi
-          npx playwright install --with-deps
 
-      - name: Run scraper (Playwright)
-        run: node scripts/scrape.js
-        env:
-          FLAGS: "--no-sandbox --disable-dev-shm-usage"
+      - name: Pull FF weekly feed (XML)
+        run: npm run pull
+
+      - name: Peek JSON
+        run: |
+          ls -la out
+          head -n 50 out/forexfactory.json
 
       - name: Build ICS
         run: npm run build:ics
@@ -52,7 +53,6 @@ jobs:
           test -s out/forexfactory.json
           grep -q "BEGIN:VCALENDAR" out/*.ics
 
-      # Pages pipeline (build job)
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
@@ -62,7 +62,6 @@ jobs:
           path: out
 
   deploy:
-    # 👇 BẮT BUỘC: environment github-pages
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
