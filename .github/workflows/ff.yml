@@ -2,7 +2,7 @@ name: FF Weekly
 
 on:
   schedule:
-    - cron: "0 23 * * 0"   # 06:00 Thứ Hai Asia/Bangkok (UTC+7)
+    - cron: "0 23 * * 0"   # 06:00 Monday Asia/Bangkok (UTC+7)
   workflow_dispatch:
 
 permissions:
@@ -10,8 +10,12 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
-  run:
+  build:
     runs-on: ubuntu-latest
     env:
       TZ: Asia/Bangkok
@@ -26,7 +30,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install deps (works with or without lockfile)
+      - name: Install deps (lockfile-agnostic)
         run: |
           if [ -f package-lock.json ]; then
             npm ci --no-fund --no-audit
@@ -48,12 +52,23 @@ jobs:
           test -s out/forexfactory.json
           grep -q "BEGIN:VCALENDAR" out/*.ics
 
-      # Deploy Pages (no gh-pages branch needed)
-      - name: Upload Pages artifact
+      # Pages pipeline (build job)
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: out
 
+  deploy:
+    # 👇 BẮT BUỘC: environment github-pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
