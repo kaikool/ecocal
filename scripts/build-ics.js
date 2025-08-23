@@ -17,17 +17,21 @@ if (!fs.existsSync(dataPath)) {
   process.exit(1);
 }
 const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+if (!Array.isArray(data) || data.length === 0) {
+  console.error('forexfactory.json is empty. Abort ICS build.');
+  process.exit(2);
+}
 
 ensureDir(OUTPUT_DIR);
 
 for (const cur of CURRENCIES) {
   const cal = ical({ name: `ForexFactory ${cur}`, timezone: TZ });
-  const items = data.filter(x => x.currency === cur);
+  const items = data.filter(x => (x.currency || '').toUpperCase() === cur);
 
   for (const ev of items) {
     const start = DateTime.fromISO(ev.startISO).setZone(TZ);
     if (!start.isValid) continue;
-    const uid = `${start.toISO()}__${cur}__${slugify(ev.title, { lower: true, strict: true })}@ecocal`;
+    const uid = `${start.toISO()}__${cur}__${slugify(ev.title || '', { lower: true, strict: true })}@ecocal`;
 
     cal.createEvent({
       id: uid,
@@ -42,5 +46,5 @@ for (const cur of CURRENCIES) {
 
   const icsPath = path.join(OUTPUT_DIR, `forexfactory_${cur.toLowerCase()}.ics`);
   fs.writeFileSync(icsPath, cal.toString(), 'utf8');
-  console.log('Wrote', icsPath);
+  console.log(`📝 Wrote ${icsPath} with ${items.length} events`);
 }
