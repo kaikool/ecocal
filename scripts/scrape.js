@@ -10,8 +10,7 @@ const OUTPUT_DIR = process.env.OUTPUT_DIR || 'out';
 const CURRENCIES = (process.env.FF_CURRENCIES || 'USD').split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
 const IMPACTS = (process.env.FF_IMPACTS || 'LOW,MEDIUM,HIGH').split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
 const MONTHS_AHEAD = parseInt(process.env.FF_MONTHS_AHEAD || '1', 10);
-
-const HEADLESS_FLAGS = (process.env.FLAGS || '--no-sandbox --disable-dev-shm-usage').split(' ');
+const FLAGS = (process.env.FLAGS || '--no-sandbox --disable-dev-shm-usage').split(' ');
 
 function ensureDir(p) { if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true }); }
 
@@ -22,16 +21,7 @@ function impactNormalize(s) {
   if (t.includes('low')) return 'LOW';
   return 'UNKNOWN';
 }
-
-function dedupeByKey(arr, keyFn) {
-  const m = new Map();
-  for (const x of arr) {
-    const k = keyFn(x);
-    if (!m.has(k)) m.set(k, x);
-  }
-  return Array.from(m.values());
-}
-
+function dedupeByKey(arr, keyFn) { const m=new Map(); for (const x of arr){const k=keyFn(x); if(!m.has(k)) m.set(k,x);} return [...m.values()]; }
 function monthList() {
   const now = DateTime.now().setZone(TZ).startOf('month');
   const list = [];
@@ -42,95 +32,171 @@ function monthList() {
   return list;
 }
 
-async function scrapeMonth(page, year, mm) {
-  const url = `https://www.forexfactory.com/calendar?month=${year}-${mm}`;
-  console.log('Go:', url);
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60_000 });
-  await page.waitForTimeout(1500 + Math.floor(Math.random() * 1500)); // “giống người”
-
-  // Đặt timezone & locale trong context đã set ở launch; page content hiển thị theo TZ
-  // Lấy toàn bộ rows. DOM FF có thể thay đổi, ta bắt “rộng” rồi lọc.
-  const rows = await page.$$('[class*="calendar"], table tr, div[class*="row"]');
-
-  const items = [];
-  let currentDate = null;
-
-  for (const row of rows) {
-    const text = (await row.innerText().catch(() => '')) || '';
-    const lowText = text.toLowerCase();
-
-    // Cập nhật ngày khi gặp header kiểu "Monday August 18"
-    if (/(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/i.test(text) &&
-        /(january|february|march|april|may|june|july|august|september|october|november|december)/i.test(text)) {
-      // Tách ngày từ chuỗi
-      const dt = DateTime.fromFormat(text.trim(), 'cccc LLLL d', { zone: TZ });
-      if (dt.isValid) currentDate = dt.set({ year: parseInt(year, 10) });
-      continue;
+async function gotoSafe(page, url) {
+  for (let a=1;a<=3;a++){
+    try {
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+      await page.waitForTimeout(1500 + Math.floor(Math.random()*1500));
+      // Đợi một trong các selector “đặc trưng” của lịch
+      await Promise.race([
+        page.waitForSelector('[class*="calendar"] table, table[class*="calendar"]', { timeout: 8000 }),
+        page.waitForSelector('[class*="calendar__row"]', { timeout: 8000 }),
+        page.waitForSelector('td.currency, td.event, [class*="currency"], [class*="event"]', { timeout: 8000 })
+      ]);
+      return;
+    } catch(e) {
+      console.warn(`goto attempt ${a} failed: ${e.message}`);
+      if (a===3) throw e;
+      await page.waitForTimeout(1000*a + Math.floor(Math.random()*500));
     }
+  }
+}
 
-    // Thử tìm cột thời gian + currency + impact + title
-    // Cách bắt linh hoạt: tìm bởi selector phổ biến trước
-    const timeSel = await row.$('td.time, [class*="time"]');
-    const curSel  = await row.$('td.currency, [class*="currency"]');
-    const impSel  = await row.$('td.impact [title], td.impact img[title], [class*="impact"] [title], [class*="impact"] img[title]');
-    const titleSel= await row.$('td.event a, td.event, [class*="event"] a, [class*="event"]');
+async function extractByKnownClasses(page, year) {
+  // Chiến lược 1: DOM hiện tại của FF (các class calendar__row, calendar__cell--*)
+  return await page.evaluate((TZ, year) => {
+    const out = [];
+    const toIso = (d) => d.toISOString(); // sẽ chỉnh TZ phía ngoài bằng Luxon khi tạo record
+    let currentDate = null;
 
-    if (!timeSel || !curSel || !titleSel) continue;
+    const rows = Array.from(document.querySelectorAll('tr, div'));
+    const isDayHeader = (el) => {
+      const txt = (el.textContent || '').trim();
+      return /(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/i.test(txt) &&
+             /(january|february|march|april|may|june|july|august|september|october|november|december)/i.test(txt);
+    };
 
-    const timeStr = ((await timeSel.innerText().catch(()=>'')) || '').trim();          // ví dụ "8:30am"
-    const currency= ((await curSel.innerText().catch(()=>'')) || '').trim().toUpperCase();
-    let impact    = ((await impSel?.getAttribute('title').catch(()=>null)) || '').trim();
-    const title   = ((await titleSel.innerText().catch(()=>'')) || '').trim();
-
-    if (!title || !currency) continue;
-
-    impact = impactNormalize(impact);
-
-    // Lọc theo currency/impact
-    if (!CURRENCIES.includes(currency)) continue;
-    if (impact !== 'UNKNOWN' && !IMPACTS.includes(impact)) continue;
-
-    // Xác định ngày giờ: nếu currentDate null, fallback: lấy từ URL (đầu tháng), nhưng cố gắng bám theo currentDate
-    let start = null;
-    if (currentDate && timeStr) {
-      // Các format có thể như "All Day", "-", "8:30am", "14:00"
-      if (/all\s*day/i.test(timeStr) || timeStr === '-' || timeStr === '') {
-        start = currentDate.set({ hour: 0, minute: 0, second: 0 });
-      } else {
-        // Thử 12h, rồi 24h
-        let dt = DateTime.fromFormat(`${currentDate.toFormat('yyyy-LL-dd')} ${timeStr}`, 'yyyy-LL-dd h:mma', { zone: TZ });
-        if (!dt.isValid) {
-          dt = DateTime.fromFormat(`${currentDate.toFormat('yyyy-LL-dd')} ${timeStr}`, 'yyyy-LL-dd H:mm', { zone: TZ });
+    for (const row of rows) {
+      // Cập nhật ngày khi gặp header
+      if (isDayHeader(row)) {
+        const txt = (row.textContent || '').replace(/\s+/g,' ').trim();
+        // Ví dụ: "Monday August 25"
+        const m = txt.match(/(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\s+([a-z]+)\s+(\d{1,2})/i);
+        if (m) {
+          const monthName = m[2];
+          const dayNum = parseInt(m[3],10);
+          const months = {
+            january:1,february:2,march:3,april:4,may:5,june:6,
+            july:7,august:8,september:9,october:10,november:11,december:12
+          };
+          const mm = months[monthName.toLowerCase()];
+          if (mm) {
+            // tạm để ISO; việc set TZ chuẩn sẽ làm ở ngoài
+            currentDate = new Date(Date.UTC(parseInt(year,10), mm-1, dayNum, 0,0,0));
+          }
         }
-        if (dt.isValid) start = dt;
+        continue;
+      }
+
+      // bắt cột time/currency/impact/title theo “nhiều khả năng”
+      const timeEl = row.querySelector('td.time, [class*="cell"][class*="time"], [class*="time"]');
+      const curEl  = row.querySelector('td.currency, [class*="cell"][class*="currency"], [class*="currency"]');
+      const evtEl  = row.querySelector('td.event a, td.event, [class*="cell"][class*="event"] a, [class*="event"] a, [class*="event"]');
+      const impEl  = row.querySelector('td.impact [title], td.impact img[title], [class*="impact"] [title], [class*="impact"] img[title]');
+
+      if (!timeEl || !curEl || !evtEl) continue;
+
+      const timeStr = (timeEl.textContent || '').trim();
+      const currency= (curEl.textContent || '').trim().toUpperCase();
+      const title   = (evtEl.textContent || '').trim();
+      const impact  = (impEl && (impEl.getAttribute('title') || '').trim()) || '';
+
+      if (!currency || !title) continue;
+      if (!currentDate) continue; // phải có context ngày
+
+      // parse time: "8:30am" | "14:00" | "All Day" | "-"
+      let start = null;
+      if (/all\s*day/i.test(timeStr) || timeStr === '-' || timeStr === '') {
+        start = new Date(currentDate.getTime()); // 00:00
+      } else {
+        // 12h
+        let m12 = timeStr.match(/^(\d{1,2}):(\d{2})\s*([ap]m)$/i);
+        if (m12) {
+          let hh = parseInt(m12[1],10);
+          const mm = parseInt(m12[2],10);
+          const ap = m12[3].toLowerCase();
+          if (ap==='pm' && hh!==12) hh+=12;
+          if (ap==='am' && hh===12) hh=0;
+          start = new Date(Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate(), hh, mm, 0));
+        } else {
+          // 24h
+          let m24 = timeStr.match(/^(\d{1,2}):(\d{2})$/);
+          if (m24) {
+            const hh = parseInt(m24[1],10);
+            const mm = parseInt(m24[2],10);
+            start = new Date(Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate(), hh, mm, 0));
+          }
+        }
+      }
+      if (!start) continue;
+
+      out.push({
+        currency,
+        title,
+        impactRaw: impact,
+        timeStr,
+        dateISO: toIso(start)
+      });
+    }
+    return out;
+  }, TZ, `${new Date().getFullYear()}`);
+}
+
+async function extractFallbackLoose(page, year) {
+  // Chiến lược 2: quét lỏng hơn toàn bộ document (dành khi class đổi)
+  return await page.evaluate((TZ, year) => {
+    const out = [];
+    let currentDate = null;
+    const months = {
+      january:1,february:2,march:3,april:4,may:5,june:6,
+      july:7,august:8,september:9,october:10,november:11,december:12
+    };
+
+    const blocks = Array.from(document.querySelectorAll('table tr, div'));
+    for (const el of blocks) {
+      const txt = (el.textContent || '').replace(/\s+/g,' ').trim();
+
+      // detect day header
+      const mday = txt.match(/\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b\s+([A-Za-z]+)\s+(\d{1,2})/i);
+      if (mday) {
+        const mm = months[mday[2].toLowerCase()];
+        const dd = parseInt(mday[3],10);
+        if (mm) currentDate = new Date(Date.UTC(parseInt(year,10), mm-1, dd, 0,0,0));
+        continue;
+      }
+
+      // detect row with time + currency + title
+      // currency 3 letters
+      const curMatch = txt.match(/\b([A-Z]{3})\b/);
+      // time 8:30am | 14:00 | All Day
+      const timeMatch = txt.match(/\b(\d{1,2}:\d{2}\s*[ap]m|\d{1,2}:\d{2}|All Day|-)\b/i);
+      if (currentDate && curMatch && timeMatch) {
+        // crude title: remove leading time/currency tokens
+        let title = txt;
+        // strip leading time
+        title = title.replace(timeMatch[0], '').trim();
+        // strip currency (first occurrence)
+        title = title.replace(curMatch[0], '').trim();
+        // cut off long tails like previous/forecast labels if present
+        const cutIdx = title.search(/\b(Previous|Forecast|Actual)\b/i);
+        if (cutIdx > 0) title = title.slice(0, cutIdx).trim();
+
+        out.push({
+          currency: curMatch[1],
+          title,
+          impactRaw: '',
+          timeStr: timeMatch[0],
+          dateISO: new Date(currentDate.getTime()).toISOString()
+        });
       }
     }
-
-    // Nếu vẫn không parse được time, bỏ qua cho sạch
-    if (!start) continue;
-
-    // Build record
-    const id = `${start.toISO()}__${currency}__${slugify(title, { lower: true, strict: true })}`;
-    const rec = {
-      id,
-      title,
-      currency,
-      impact,
-      startISO: start.toISO(),   // TZ Asia/Bangkok
-      tz: TZ,
-      source: 'forexfactory',
-      year,
-      month: mm
-    };
-    items.push(rec);
-  }
-
-  return items;
+    return out;
+  }, TZ, `${new Date().getFullYear()}`);
 }
 
 (async () => {
   ensureDir(OUTPUT_DIR);
-  const browser = await chromium.launch({ headless: true, args: HEADLESS_FLAGS });
+  const browser = await chromium.launch({ headless: true, args: FLAGS });
   const context = await browser.newContext({
     timezoneId: TZ,
     locale: 'en-US',
@@ -140,30 +206,69 @@ async function scrapeMonth(page, year, mm) {
 
   const months = monthList();
   let all = [];
+
   for (const m of months) {
-    for (let attempt = 1; attempt <= 3; attempt++) {
-      try {
-        const part = await scrapeMonth(page, m.y, m.m);
-        all = all.concat(part);
-        break;
-      } catch (e) {
-        console.warn(`Month ${m.y}-${m.m} attempt ${attempt} failed:`, e.message);
-        await page.waitForTimeout(1000 * attempt + Math.floor(Math.random()*500));
-        if (attempt === 3) console.error('Give up this month.');
-      }
+    const url = `https://www.forexfactory.com/calendar?month=${m.y}-${m.m}`;
+    console.log('⏩ Go', url);
+    await gotoSafe(page, url);
+
+    // Ưu tiên chiến lược theo class
+    let raw = await extractByKnownClasses(page, m.y);
+    if (!raw || raw.length === 0) {
+      console.warn('⚠️ Primary extractor returned 0. Trying fallback...');
+      raw = await extractFallbackLoose(page, m.y);
     }
-    await page.waitForTimeout(1200 + Math.floor(Math.random() * 1200));
+    console.log(`Parsed ${raw.length} raw rows for ${m.y}-${m.m}`);
+
+    // chuyển về Luxon + lọc
+    for (const r of raw) {
+      const currency = (r.currency || '').toUpperCase();
+      if (!CURRENCIES.includes(currency)) continue;
+
+      const impact = impactNormalize(r.impactRaw || '');
+      if (impact !== 'UNKNOWN' && !IMPACTS.includes(impact)) continue;
+
+      // r.timeStr + r.dateISO => build start (TZ Asia/Bangkok)
+      let start;
+      const base = DateTime.fromISO(r.dateISO, { zone: 'UTC' }).setZone(TZ); // date part
+      if (/all\s*day/i.test(r.timeStr) || r.timeStr === '-' || !r.timeStr) {
+        start = base.set({ hour:0, minute:0, second:0 });
+      } else {
+        let dt = DateTime.fromFormat(`${base.toFormat('yyyy-LL-dd')} ${r.timeStr}`, 'yyyy-LL-dd h:mma', { zone: TZ });
+        if (!dt.isValid) dt = DateTime.fromFormat(`${base.toFormat('yyyy-LL-dd')} ${r.timeStr}`, 'yyyy-LL-dd H:mm', { zone: TZ });
+        if (dt.isValid) start = dt;
+      }
+      if (!start || !start.isValid) continue;
+
+      all.push({
+        id: `${start.toISO()}__${currency}__${slugify((r.title||'').slice(0,100), { lower:true, strict:true })}`,
+        title: r.title || '',
+        currency,
+        impact,
+        startISO: start.toISO(),
+        tz: TZ,
+        year: m.y,
+        month: m.m
+      });
+    }
+
+    await page.waitForTimeout(1200 + Math.floor(Math.random()*1200));
   }
 
-  // dedupe theo (startISO + currency + title)
+  // dedupe + sort
   const uniq = dedupeByKey(all, x => `${x.startISO}__${x.currency}__${x.title}`);
-  // sort
   uniq.sort((a,b) => (a.startISO || '').localeCompare(b.startISO));
 
   const outJson = path.join(OUTPUT_DIR, 'forexfactory.json');
   fs.writeFileSync(outJson, JSON.stringify(uniq, null, 2), 'utf8');
+  console.log(`✅ Saved ${uniq.length} events -> ${outJson}`);
 
-  console.log(`Saved ${uniq.length} events -> ${outJson}`);
+  if (uniq.length === 0) {
+    console.error('❌ No events parsed. Failing the job to avoid publishing empty ICS.');
+    await browser.close();
+    process.exit(2);
+  }
+
   await browser.close();
   process.exit(0);
 })();
