@@ -11,6 +11,9 @@ const CURRENCIES = (process.env.FF_CURRENCIES || 'USD')
   .map(s => s.trim().toUpperCase())
   .filter(Boolean);
 
+// Múi giờ để đặt báo 8:00 sáng (theo yêu cầu)
+const NOTIFY_TZ = process.env.NOTIFY_TZ || 'Asia/Bangkok';
+
 const dataPath = path.join(OUTPUT_DIR, 'forexfactory.json');
 if (!fs.existsSync(dataPath)) { console.error('Missing forexfactory.json.'); process.exit(1); }
 const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
@@ -42,18 +45,41 @@ for (const cur of CURRENCIES) {
     const dots = impactDots(ev.impact);
     const summary = `${dots ? dots + ' ' : ''}${ev.title || ''}`.trim(); // chấm tròn TRƯỚC tên
 
-    cal.createEvent({
+    const event = cal.createEvent({
       id: uid,
       uid,
       start: startUtc.toJSDate(),
       end: startUtc.plus({ minutes: 30 }).toJSDate(),
-      summary,         // chỉ tiêu đề
-      // description: bỏ trống
+      summary,
+      // description: bỏ trống theo yêu cầu
       timezone: 'UTC'
     });
+
+    // Alarm 1: trước sự kiện 30 phút (relative)
+    // ical-generator: trigger âm là giây trước event
+    event.createAlarm({
+      type: 'display',
+      trigger: -30 * 60 // -1800s = 30 phút trước
+    });
+
+    // Alarm 2: lúc 08:00 sáng (Asia/Bangkok) cùng NGÀY với sự kiện
+    const eventLocalDay = startUtc.setZone(NOTIFY_TZ);
+    const eightLocal = DateTime.fromObject(
+      { year: eventLocalDay.year, month: eventLocalDay.month, day: eventLocalDay.day, hour: 8, minute: 0, second: 0 },
+      { zone: NOTIFY_TZ }
+    );
+    const eightUtc = eightLocal.toUTC(); // chuyển sang UTC để đặt absolute trigger
+
+    // Chỉ tạo nếu 08:00 không invalid
+    if (eightUtc.isValid) {
+      event.createAlarm({
+        type: 'display',
+        trigger: eightUtc.toJSDate() // absolute trigger (UTC)
+      });
+    }
   }
 
   const icsPath = path.join(OUTPUT_DIR, `forexfactory_${cur.toLowerCase()}.ics`);
   fs.writeFileSync(icsPath, cal.toString(), 'utf8');
-  console.log(`📝 Wrote ${icsPath} with ${items.length} events`);
+  console.log(`📝 Wrote ${icsPath} with ${items.length} events (with 08:00 + -30min alarms)`);
 }
