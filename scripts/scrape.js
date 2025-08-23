@@ -7,8 +7,14 @@ import slugify from 'slugify';
 
 const TZ = process.env.TZ || 'Asia/Bangkok';
 const OUTPUT_DIR = process.env.OUTPUT_DIR || 'out';
-const CURRENCIES = (process.env.FF_CURRENCIES || 'USD').split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
-const IMPACTS = (process.env.FF_IMPACTS || 'LOW,MEDIUM,HIGH').split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+const CURRENCIES = (process.env.FF_CURRENCIES || 'USD')
+  .split(',')
+  .map(s => s.trim().toUpperCase())
+  .filter(Boolean);
+const IMPACTS = (process.env.FF_IMPACTS || 'LOW,MEDIUM,HIGH')
+  .split(',')
+  .map(s => s.trim().toUpperCase())
+  .filter(Boolean);
 const MONTHS_AHEAD = parseInt(process.env.FF_MONTHS_AHEAD || '1', 10);
 const FLAGS = (process.env.FLAGS || '--no-sandbox --disable-dev-shm-usage').split(' ');
 
@@ -21,7 +27,14 @@ function impactNormalize(s) {
   if (t.includes('low')) return 'LOW';
   return 'UNKNOWN';
 }
-function dedupeByKey(arr, keyFn) { const m=new Map(); for (const x of arr){const k=keyFn(x); if(!m.has(k)) m.set(k,x);} return [...m.values()]; }
+function dedupeByKey(arr, keyFn) {
+  const m = new Map();
+  for (const x of arr) {
+    const k = keyFn(x);
+    if (!m.has(k)) m.set(k, x);
+  }
+  return [...m.values()];
+}
 function monthList() {
   const now = DateTime.now().setZone(TZ).startOf('month');
   const list = [];
@@ -33,30 +46,30 @@ function monthList() {
 }
 
 async function gotoSafe(page, url) {
-  for (let a=1;a<=3;a++){
+  for (let a = 1; a <= 3; a++) {
     try {
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-      await page.waitForTimeout(1500 + Math.floor(Math.random()*1500));
-      // Đợi một trong các selector “đặc trưng” của lịch
+      await page.waitForTimeout(1500 + Math.floor(Math.random() * 1500));
       await Promise.race([
         page.waitForSelector('[class*="calendar"] table, table[class*="calendar"]', { timeout: 8000 }),
         page.waitForSelector('[class*="calendar__row"]', { timeout: 8000 }),
         page.waitForSelector('td.currency, td.event, [class*="currency"], [class*="event"]', { timeout: 8000 })
       ]);
       return;
-    } catch(e) {
+    } catch (e) {
       console.warn(`goto attempt ${a} failed: ${e.message}`);
-      if (a===3) throw e;
-      await page.waitForTimeout(1000*a + Math.floor(Math.random()*500));
+      if (a === 3) throw e;
+      await page.waitForTimeout(1000 * a + Math.floor(Math.random() * 500));
     }
   }
 }
 
-async function extractByKnownClasses(page, year) {
-  // Chiến lược 1: DOM hiện tại của FF (các class calendar__row, calendar__cell--*)
-  return await page.evaluate((TZ, year) => {
+// Chiến lược 1: DOM theo class phổ biến của FF
+async function extractByKnownClasses(page, params) {
+  // params = { year: 2025, tz: "Asia/Bangkok" }
+  return await page.evaluate((ctx) => {
     const out = [];
-    const toIso = (d) => d.toISOString(); // sẽ chỉnh TZ phía ngoài bằng Luxon khi tạo record
+    const toIso = (d) => d.toISOString();
     let currentDate = null;
 
     const rows = Array.from(document.querySelectorAll('tr, div'));
@@ -67,10 +80,9 @@ async function extractByKnownClasses(page, year) {
     };
 
     for (const row of rows) {
-      // Cập nhật ngày khi gặp header
+      // Cập nhật ngày khi gặp header kiểu "Monday August 18"
       if (isDayHeader(row)) {
         const txt = (row.textContent || '').replace(/\s+/g,' ').trim();
-        // Ví dụ: "Monday August 25"
         const m = txt.match(/(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\s+([a-z]+)\s+(\d{1,2})/i);
         if (m) {
           const monthName = m[2];
@@ -81,14 +93,13 @@ async function extractByKnownClasses(page, year) {
           };
           const mm = months[monthName.toLowerCase()];
           if (mm) {
-            // tạm để ISO; việc set TZ chuẩn sẽ làm ở ngoài
-            currentDate = new Date(Date.UTC(parseInt(year,10), mm-1, dayNum, 0,0,0));
+            currentDate = new Date(Date.UTC(parseInt(ctx.year,10), mm-1, dayNum, 0,0,0));
           }
         }
         continue;
       }
 
-      // bắt cột time/currency/impact/title theo “nhiều khả năng”
+      // Các cột thường gặp
       const timeEl = row.querySelector('td.time, [class*="cell"][class*="time"], [class*="time"]');
       const curEl  = row.querySelector('td.currency, [class*="cell"][class*="currency"], [class*="currency"]');
       const evtEl  = row.querySelector('td.event a, td.event, [class*="cell"][class*="event"] a, [class*="event"] a, [class*="event"]');
@@ -102,7 +113,7 @@ async function extractByKnownClasses(page, year) {
       const impact  = (impEl && (impEl.getAttribute('title') || '').trim()) || '';
 
       if (!currency || !title) continue;
-      if (!currentDate) continue; // phải có context ngày
+      if (!currentDate) continue;
 
       // parse time: "8:30am" | "14:00" | "All Day" | "-"
       let start = null;
@@ -139,12 +150,12 @@ async function extractByKnownClasses(page, year) {
       });
     }
     return out;
-  }, TZ, `${new Date().getFullYear()}`);
+  }, { year: params.year, tz: params.tz });
 }
 
-async function extractFallbackLoose(page, year) {
-  // Chiến lược 2: quét lỏng hơn toàn bộ document (dành khi class đổi)
-  return await page.evaluate((TZ, year) => {
+// Chiến lược 2: Fallback lỏng, quét text
+async function extractFallbackLoose(page, params) {
+  return await page.evaluate((ctx) => {
     const out = [];
     let currentDate = null;
     const months = {
@@ -161,23 +172,15 @@ async function extractFallbackLoose(page, year) {
       if (mday) {
         const mm = months[mday[2].toLowerCase()];
         const dd = parseInt(mday[3],10);
-        if (mm) currentDate = new Date(Date.UTC(parseInt(year,10), mm-1, dd, 0,0,0));
+        if (mm) currentDate = new Date(Date.UTC(parseInt(ctx.year,10), mm-1, dd, 0,0,0));
         continue;
       }
 
-      // detect row with time + currency + title
-      // currency 3 letters
+      // detect row with time + currency + title (thô)
       const curMatch = txt.match(/\b([A-Z]{3})\b/);
-      // time 8:30am | 14:00 | All Day
       const timeMatch = txt.match(/\b(\d{1,2}:\d{2}\s*[ap]m|\d{1,2}:\d{2}|All Day|-)\b/i);
       if (currentDate && curMatch && timeMatch) {
-        // crude title: remove leading time/currency tokens
-        let title = txt;
-        // strip leading time
-        title = title.replace(timeMatch[0], '').trim();
-        // strip currency (first occurrence)
-        title = title.replace(curMatch[0], '').trim();
-        // cut off long tails like previous/forecast labels if present
+        let title = txt.replace(timeMatch[0], '').replace(curMatch[0], '').trim();
         const cutIdx = title.search(/\b(Previous|Forecast|Actual)\b/i);
         if (cutIdx > 0) title = title.slice(0, cutIdx).trim();
 
@@ -191,7 +194,7 @@ async function extractFallbackLoose(page, year) {
       }
     }
     return out;
-  }, TZ, `${new Date().getFullYear()}`);
+  }, { year: params.year, tz: params.tz });
 }
 
 (async () => {
@@ -212,11 +215,10 @@ async function extractFallbackLoose(page, year) {
     console.log('⏩ Go', url);
     await gotoSafe(page, url);
 
-    // Ưu tiên chiến lược theo class
-    let raw = await extractByKnownClasses(page, m.y);
+    let raw = await extractByKnownClasses(page, { year: m.y, tz: TZ });
     if (!raw || raw.length === 0) {
       console.warn('⚠️ Primary extractor returned 0. Trying fallback...');
-      raw = await extractFallbackLoose(page, m.y);
+      raw = await extractFallbackLoose(page, { year: m.y, tz: TZ });
     }
     console.log(`Parsed ${raw.length} raw rows for ${m.y}-${m.m}`);
 
@@ -252,7 +254,7 @@ async function extractFallbackLoose(page, year) {
       });
     }
 
-    await page.waitForTimeout(1200 + Math.floor(Math.random()*1200));
+    await page.waitForTimeout(1200 + Math.floor(Math.random() * 1200));
   }
 
   // dedupe + sort
