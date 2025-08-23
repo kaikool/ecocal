@@ -18,12 +18,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      TZ: Asia/Bangkok
       FF_CURRENCIES: USD
       FF_IMPACTS: LOW,MEDIUM,HIGH
       OUTPUT_DIR: out
       # Tuỳ chọn: có thể thay bằng CSV/JSON nếu thích
       FF_FEED_URL: https://nfs.faireconomy.media/ff_calendar_thisweek.xml
+      IMPACT_COLOR_MODE: split
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
