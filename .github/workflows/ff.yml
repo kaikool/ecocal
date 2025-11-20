@@ -2,12 +2,13 @@ name: FF Weekly
 
 on:
   schedule:
-    - cron: "0 23 * * 0"    # 06:00 Monday Asia/Bangkok (UTC+7)
-  workflow_dispatch:
+    # Chạy vào 06:00 sáng thứ Hai hàng tuần (giờ VN)
+    - cron: "0 23 * * 0"
+  workflow_dispatch: # Cho phép bấm nút chạy bằng tay để test
 
 permissions:
-  contents: write # Cho phép auto-commit
-  pages: write
+  contents: write # Cần quyền này để Auto-commit
+  pages: write    # Cần quyền này để Deploy Pages
   id-token: write
 
 concurrency:
@@ -22,13 +23,11 @@ jobs:
       FF_IMPACTS: LOW,MEDIUM,HIGH
       OUTPUT_DIR: out
       FF_FEED_URL: https://nfs.faireconomy.media/ff_calendar_thisweek.xml
-      # Thêm múi giờ feed nếu cần thiết
-      # FEED_TZ: Asia/Bangkok 
+      # FEED_TZ: Asia/Bangkok # Bỏ comment nếu cần chỉnh múi giờ feed
       
     steps:
       - uses: actions/checkout@v4
-      
-      # --- CÁC BƯỚC BỊ THIẾU ĐÃ ĐƯỢC KHÔI PHỤC DƯỚI ĐÂY ---
+
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
 
@@ -43,21 +42,13 @@ jobs:
       - name: Pull FF weekly feed (XML)
         run: npm run pull
 
-      - name: Peek JSON (Debug)
-        run: |
-          ls -la out
-          if [ -f out/forexfactory.json ]; then
-            head -n 20 out/forexfactory.json
-          else
-            echo "Warning: forexfactory.json not found"
-          fi
-
       - name: Build ICS
         run: npm run build:ics
         
+      # Tạo file index.html để xem danh sách file dễ dàng hơn
       - name: Make simple index.html
         run: |
-          echo "<h1>ecocal - Lịch Kinh tế Forex</h1><p>Các tệp ICS (iCalendar) tự động cập nhật hàng tuần:</p><ul>" > out/index.html
+          echo "<h1>ecocal - Lịch Kinh tế Forex</h1><p>Cập nhật lúc: $(date)</p><ul>" > out/index.html
           for f in out/*.ics; do
             if [ -e "$f" ]; then
               bn=$(basename "$f")
@@ -66,11 +57,19 @@ jobs:
           done
           echo "</ul>" >> out/index.html
 
+      # --- TRICK CHỐNG TẮT SAU 60 NGÀY ---
+      # Luôn tạo thay đổi trong file keepalive.txt để Git có cái mà commit
+      - name: Update keepalive timestamp
+        run: |
+          date > keepalive.txt
+          date > out/last_updated.txt
+
       - name: Commit and Push Generated Files
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          file_pattern: 'out/*.ics out/*.json out/index.html'
-          commit_message: '🤖 AUTO: Cập nhật lịch ICS và JSON mới nhất'
+          # Commit cả file kết quả (out/) và file dấu vết (keepalive.txt)
+          file_pattern: 'out/*.ics out/*.json out/index.html keepalive.txt out/last_updated.txt'
+          commit_message: '🤖 AUTO: Cập nhật lịch và Keepalive'
           commit_author: 'GitHub Actions Bot <41898282+github-actions[bot]@users.noreply.github.com>'
           commit_options: '--no-verify'
 
@@ -78,7 +77,6 @@ jobs:
         run: |
           echo "--- Danh sách file trong thư mục out/ ---"
           ls -R out/
-      # ------------------------------------------------------
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
