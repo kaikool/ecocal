@@ -2,11 +2,11 @@ name: FF Weekly
 
 on:
   schedule:
-    - cron: "0 23 * * 0"   # 06:00 Monday Asia/Bangkok (UTC+7)
+    - cron: "0 23 * * 0"    # 06:00 Monday Asia/Bangkok (UTC+7)
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write # 👈 Đã thay đổi từ 'read' thành 'write' để cho phép auto-commit
   pages: write
   id-token: write
 
@@ -47,7 +47,25 @@ jobs:
 
       - name: Build ICS
         run: npm run build:ics
+        
+      # ===============================================
+      #  BƯỚC MỚI: Tự động Commit (Auto-Commit)
+      # ===============================================
+      - name: Commit and Push Generated Files (Prevent 60-day shutdown)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          # Chỉ commit các file ICS và JSON được tạo ra
+          file_pattern: 'out/*.ics out/*.json out/index.html'
+          commit_message: '🤖 AUTO: Cập nhật lịch ICS và JSON mới nhất'
+          # Tác giả commit
+          commit_author: 'GitHub Actions Bot <41898282+github-actions[bot]@users.noreply.github.com>'
+          # Đảm bảo commit được tạo ngay cả khi nội dung không thay đổi, 
+          # nhằm đảm bảo có hoạt động (tùy chọn, đã loại bỏ --allow-empty để tránh spam commit)
+          commit_options: '--no-verify'
+
       - name: Make simple index.html
+        # LƯU Ý: Tôi di chuyển bước này lên trên bước Configure Pages
+        # để đảm bảo file index.html được commit trong bước trên
         run: |
           echo "<h1>ecocal</h1><ul>" > out/index.html
           for f in out/*.ics; do
