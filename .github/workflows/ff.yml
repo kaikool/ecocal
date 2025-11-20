@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write # 👈 Đã thay đổi từ 'read' thành 'write' để cho phép auto-commit
+  contents: write # Cho phép auto-commit
   pages: write
   id-token: write
 
@@ -49,30 +49,28 @@ jobs:
         run: npm run build:ics
         
       # ===============================================
-      #  BƯỚC MỚI: Tự động Commit (Auto-Commit)
+      # BƯỚC SỬA LỖI: Tạo HTML TRƯỚC khi Commit
       # ===============================================
-      - name: Commit and Push Generated Files (Prevent 60-day shutdown)
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          # Chỉ commit các file ICS và JSON được tạo ra
-          file_pattern: 'out/*.ics out/*.json out/index.html'
-          commit_message: '🤖 AUTO: Cập nhật lịch ICS và JSON mới nhất'
-          # Tác giả commit
-          commit_author: 'GitHub Actions Bot <41898282+github-actions[bot]@users.noreply.github.com>'
-          # Đảm bảo commit được tạo ngay cả khi nội dung không thay đổi, 
-          # nhằm đảm bảo có hoạt động (tùy chọn, đã loại bỏ --allow-empty để tránh spam commit)
-          commit_options: '--no-verify'
-
       - name: Make simple index.html
-        # LƯU Ý: Tôi di chuyển bước này lên trên bước Configure Pages
-        # để đảm bảo file index.html được commit trong bước trên
         run: |
-          echo "<h1>ecocal</h1><ul>" > out/index.html
+          echo "<h1>ecocal - Lịch Kinh tế Forex</h1><p>Các tệp ICS (iCalendar) tự động cập nhật hàng tuần:</p><ul>" > out/index.html
           for f in out/*.ics; do
             bn=$(basename "$f")
             echo "<li><a href=\"$bn\">$bn</a></li>" >> out/index.html
           done
           echo "</ul>" >> out/index.html
+
+      # ===============================================
+      #  BƯỚC Tự động Commit (Auto-Commit)
+      # ===============================================
+      - name: Commit and Push Generated Files (Prevent 60-day shutdown)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          # index.html BÂY GIỜ ĐÃ TỒN TẠI
+          file_pattern: 'out/*.ics out/*.json out/index.html'
+          commit_message: '🤖 AUTO: Cập nhật lịch ICS và JSON mới nhất'
+          commit_author: 'GitHub Actions Bot <41898282+github-actions[bot]@users.noreply.github.com>'
+          commit_options: '--no-verify'
 
       - name: Sanity checks
         run: |
