@@ -77,6 +77,17 @@ jobs:
           test -s out/forexfactory.json
           grep -q "BEGIN:VCALENDAR" out/*.ics
 
+      # ===============================================
+      #  BƯỚC MỚI: Kiểm tra (Diagnostic)
+      # ===============================================
+      - name: Verify files before artifact upload
+        run: |
+          echo "--- Danh sách file trong thư mục out/ ---"
+          ls -R out/
+          echo "--- Kiểm tra file forexfactory_usd.ics ---"
+          test -f out/forexfactory_usd.ics && echo "File tồn tại và có thể đọc." || (echo "LỖI: KHÔNG TÌM THẤY forexfactory_usd.ics"; exit 1)
+
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
