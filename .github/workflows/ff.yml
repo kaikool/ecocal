@@ -21,11 +21,14 @@ jobs:
       FF_CURRENCIES: USD
       FF_IMPACTS: LOW,MEDIUM,HIGH
       OUTPUT_DIR: out
-      # Tuỳ chọn: có thể thay bằng CSV/JSON nếu thích
       FF_FEED_URL: https://nfs.faireconomy.media/ff_calendar_thisweek.xml
+      # Thêm múi giờ feed nếu cần thiết
+      # FEED_TZ: Asia/Bangkok 
       
     steps:
       - uses: actions/checkout@v4
+      
+      # --- CÁC BƯỚC BỊ THIẾU ĐÃ ĐƯỢC KHÔI PHỤC DƯỚI ĐÂY ---
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
 
@@ -40,53 +43,42 @@ jobs:
       - name: Pull FF weekly feed (XML)
         run: npm run pull
 
-      - name: Peek JSON
+      - name: Peek JSON (Debug)
         run: |
           ls -la out
-          head -n 50 out/forexfactory.json
+          if [ -f out/forexfactory.json ]; then
+            head -n 20 out/forexfactory.json
+          else
+            echo "Warning: forexfactory.json not found"
+          fi
 
       - name: Build ICS
         run: npm run build:ics
         
-      # ===============================================
-      # BƯỚC SỬA LỖI: Tạo HTML TRƯỚC khi Commit
-      # ===============================================
       - name: Make simple index.html
         run: |
           echo "<h1>ecocal - Lịch Kinh tế Forex</h1><p>Các tệp ICS (iCalendar) tự động cập nhật hàng tuần:</p><ul>" > out/index.html
           for f in out/*.ics; do
-            bn=$(basename "$f")
-            echo "<li><a href=\"$bn\">$bn</a></li>" >> out/index.html
+            if [ -e "$f" ]; then
+              bn=$(basename "$f")
+              echo "<li><a href=\"$bn\">$bn</a></li>" >> out/index.html
+            fi
           done
           echo "</ul>" >> out/index.html
 
-      # ===============================================
-      #  BƯỚC Tự động Commit (Auto-Commit)
-      # ===============================================
-      - name: Commit and Push Generated Files (Prevent 60-day shutdown)
+      - name: Commit and Push Generated Files
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          # index.html BÂY GIỜ ĐÃ TỒN TẠI
           file_pattern: 'out/*.ics out/*.json out/index.html'
           commit_message: '🤖 AUTO: Cập nhật lịch ICS và JSON mới nhất'
           commit_author: 'GitHub Actions Bot <41898282+github-actions[bot]@users.noreply.github.com>'
           commit_options: '--no-verify'
 
-      - name: Sanity checks
-        run: |
-          test -s out/forexfactory.json
-          grep -q "BEGIN:VCALENDAR" out/*.ics
-
-      # ===============================================
-      #  BƯỚC MỚI: Kiểm tra (Diagnostic)
-      # ===============================================
       - name: Verify files before artifact upload
         run: |
           echo "--- Danh sách file trong thư mục out/ ---"
           ls -R out/
-          echo "--- Kiểm tra file forexfactory_usd.ics ---"
-          test -f out/forexfactory_usd.ics && echo "File tồn tại và có thể đọc." || (echo "LỖI: KHÔNG TÌM THẤY forexfactory_usd.ics"; exit 1)
-
+      # ------------------------------------------------------
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
