@@ -1,262 +1,154 @@
 [
   {
-    "id": "2025-12-15T13:30:00.000Z__USD__empire-state-manufacturing-index",
-    "title": "Empire State Manufacturing Index",
-    "currency": "USD",
-    "impact": "MEDIUM",
-    "startISO": "2025-12-15T13:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-15T14:30:00.000Z__USD__fomc-member-miran-speaks",
-    "title": "FOMC Member Miran Speaks",
+    "id": "2025-12-21T11:00:00.000Z__USD__fomc-member-hammack-speaks",
+    "title": "FOMC Member Hammack Speaks",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2025-12-15T14:30:00.000Z",
+    "startISO": "2025-12-21T11:00:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-15T15:00:00.000Z__USD__nahb-housing-market-index",
-    "title": "NAHB Housing Market Index",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2025-12-15T15:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-15T15:30:00.000Z__USD__fomc-member-williams-speaks",
-    "title": "FOMC Member Williams Speaks",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2025-12-15T15:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-15T16:00:00.000Z__USD__fomc-member-miran-speaks",
-    "title": "FOMC Member Miran Speaks",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2025-12-15T16:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-16T13:20:00.000Z__USD__adp-weekly-employment-change",
+    "id": "2025-12-23T13:20:00.000Z__USD__adp-weekly-employment-change",
     "title": "ADP Weekly Employment Change",
     "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2025-12-16T13:20:00.000Z",
+    "impact": "MEDIUM",
+    "startISO": "2025-12-23T13:20:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-16T13:30:00.000Z__USD__average-hourly-earnings-mm",
-    "title": "Average Hourly Earnings m/m",
+    "id": "2025-12-23T13:30:00.000Z__USD__prelim-gdp-qq",
+    "title": "Prelim GDP q/q",
     "currency": "USD",
     "impact": "HIGH",
-    "startISO": "2025-12-16T13:30:00.000Z",
+    "startISO": "2025-12-23T13:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-16T13:30:00.000Z__USD__core-retail-sales-mm",
-    "title": "Core Retail Sales m/m",
+    "id": "2025-12-23T13:30:00.000Z__USD__core-durable-goods-orders-mm",
+    "title": "Core Durable Goods Orders m/m",
     "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2025-12-16T13:30:00.000Z",
+    "impact": "MEDIUM",
+    "startISO": "2025-12-23T13:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-16T13:30:00.000Z__USD__non-farm-employment-change",
-    "title": "Non-Farm Employment Change",
+    "id": "2025-12-23T13:30:00.000Z__USD__durable-goods-orders-mm",
+    "title": "Durable Goods Orders m/m",
     "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2025-12-16T13:30:00.000Z",
+    "impact": "MEDIUM",
+    "startISO": "2025-12-23T13:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-16T13:30:00.000Z__USD__retail-sales-mm",
-    "title": "Retail Sales m/m",
+    "id": "2025-12-23T13:30:00.000Z__USD__prelim-gdp-price-index-qq",
+    "title": "Prelim GDP Price Index q/q",
     "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2025-12-16T13:30:00.000Z",
+    "impact": "MEDIUM",
+    "startISO": "2025-12-23T13:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-16T13:30:00.000Z__USD__unemployment-rate",
-    "title": "Unemployment Rate",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2025-12-16T13:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-16T14:45:00.000Z__USD__flash-manufacturing-pmi",
-    "title": "Flash Manufacturing PMI",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2025-12-16T14:45:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-16T14:45:00.000Z__USD__flash-services-pmi",
-    "title": "Flash Services PMI",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2025-12-16T14:45:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-16T15:00:00.000Z__USD__business-inventories-mm",
-    "title": "Business Inventories m/m",
+    "id": "2025-12-23T14:14:00.000Z__USD__capacity-utilization-rate",
+    "title": "Capacity Utilization Rate",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2025-12-16T15:00:00.000Z",
+    "startISO": "2025-12-23T14:14:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-16T21:30:00.000Z__USD__api-weekly-statistical-bulletin",
+    "id": "2025-12-23T14:14:00.000Z__USD__industrial-production-mm",
+    "title": "Industrial Production m/m",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2025-12-23T14:14:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2025-12-23T14:15:00.000Z__USD__capacity-utilization-rate",
+    "title": "Capacity Utilization Rate",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2025-12-23T14:15:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2025-12-23T14:15:00.000Z__USD__industrial-production-mm",
+    "title": "Industrial Production m/m",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2025-12-23T14:15:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2025-12-23T15:00:00.000Z__USD__cb-consumer-confidence",
+    "title": "CB Consumer Confidence",
+    "currency": "USD",
+    "impact": "MEDIUM",
+    "startISO": "2025-12-23T15:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2025-12-23T15:00:00.000Z__USD__richmond-manufacturing-index",
+    "title": "Richmond Manufacturing Index",
+    "currency": "USD",
+    "impact": "MEDIUM",
+    "startISO": "2025-12-23T15:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2025-12-23T21:30:00.000Z__USD__api-weekly-statistical-bulletin",
     "title": "API Weekly Statistical Bulletin",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2025-12-16T21:30:00.000Z",
+    "startISO": "2025-12-23T21:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-17T13:15:00.000Z__USD__fomc-member-waller-speaks",
-    "title": "FOMC Member Waller Speaks",
-    "currency": "USD",
-    "impact": "MEDIUM",
-    "startISO": "2025-12-17T13:15:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-17T14:05:00.000Z__USD__fomc-member-williams-speaks",
-    "title": "FOMC Member Williams Speaks",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2025-12-17T14:05:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-17T15:30:00.000Z__USD__crude-oil-inventories",
-    "title": "Crude Oil Inventories",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2025-12-17T15:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-17T17:30:00.000Z__USD__fomc-member-bostic-speaks",
-    "title": "FOMC Member Bostic Speaks",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2025-12-17T17:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-18T13:30:00.000Z__USD__cpi-yy",
-    "title": "CPI y/y",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2025-12-18T13:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-18T13:30:00.000Z__USD__unemployment-claims",
+    "id": "2025-12-24T13:30:00.000Z__USD__unemployment-claims",
     "title": "Unemployment Claims",
     "currency": "USD",
     "impact": "HIGH",
-    "startISO": "2025-12-18T13:30:00.000Z",
+    "startISO": "2025-12-24T13:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-18T13:30:00.000Z__USD__philly-fed-manufacturing-index",
-    "title": "Philly Fed Manufacturing Index",
+    "id": "2025-12-24T15:30:00.000Z__USD__crude-oil-inventories",
+    "title": "Crude Oil Inventories",
     "currency": "USD",
-    "impact": "MEDIUM",
-    "startISO": "2025-12-18T13:30:00.000Z",
+    "impact": "LOW",
+    "startISO": "2025-12-24T15:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-18T13:30:00.000Z__USD__core-cpi-mm",
-    "title": "Core CPI m/m",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2025-12-18T13:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-18T13:30:00.000Z__USD__cpi-mm",
-    "title": "CPI m/m",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2025-12-18T13:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-18T15:30:00.000Z__USD__natural-gas-storage",
+    "id": "2025-12-24T17:00:00.000Z__USD__natural-gas-storage",
     "title": "Natural Gas Storage",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2025-12-18T15:30:00.000Z",
+    "startISO": "2025-12-24T17:00:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-18T21:00:00.000Z__USD__tic-long-term-purchases",
-    "title": "TIC Long-Term Purchases",
+    "id": "2025-12-25T13:00:00.000Z__USD__bank-holiday",
+    "title": "Bank Holiday",
     "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2025-12-18T21:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-19T15:00:00.000Z__USD__existing-home-sales",
-    "title": "Existing Home Sales",
-    "currency": "USD",
-    "impact": "MEDIUM",
-    "startISO": "2025-12-19T15:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-19T15:00:00.000Z__USD__revised-uom-consumer-sentiment",
-    "title": "Revised UoM Consumer Sentiment",
-    "currency": "USD",
-    "impact": "MEDIUM",
-    "startISO": "2025-12-19T15:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-19T15:00:00.000Z__USD__revised-uom-inflation-expectations",
-    "title": "Revised UoM Inflation Expectations",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2025-12-19T15:00:00.000Z",
+    "impact": "UNKNOWN",
+    "startISO": "2025-12-25T13:00:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   }
