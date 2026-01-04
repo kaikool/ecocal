@@ -1,136 +1,280 @@
 [
   {
-    "id": "2025-12-29T15:00:00.000Z__USD__pending-home-sales-mm",
-    "title": "Pending Home Sales m/m",
-    "currency": "USD",
-    "impact": "MEDIUM",
-    "startISO": "2025-12-29T15:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-29T15:30:00.000Z__USD__crude-oil-inventories",
-    "title": "Crude Oil Inventories",
+    "id": "2026-01-04T17:30:00.000Z__USD__fomc-member-kashkari-speaks",
+    "title": "FOMC Member Kashkari Speaks",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2025-12-29T15:30:00.000Z",
+    "startISO": "2026-01-04T17:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-29T17:00:00.000Z__USD__natural-gas-storage",
-    "title": "Natural Gas Storage",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2025-12-29T17:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-30T14:00:00.000Z__USD__hpi-mm",
-    "title": "HPI m/m",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2025-12-30T14:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-30T14:00:00.000Z__USD__sandpcs-composite-20-hpi-yy",
-    "title": "S&P/CS Composite-20 HPI y/y",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2025-12-30T14:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-30T14:45:00.000Z__USD__chicago-pmi",
-    "title": "Chicago PMI",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2025-12-30T14:45:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2025-12-30T19:00:00.000Z__USD__fomc-meeting-minutes",
-    "title": "FOMC Meeting Minutes",
+    "id": "2026-01-05T15:00:00.000Z__USD__ism-manufacturing-pmi",
+    "title": "ISM Manufacturing PMI",
     "currency": "USD",
     "impact": "HIGH",
-    "startISO": "2025-12-30T19:00:00.000Z",
+    "startISO": "2026-01-05T15:00:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-30T21:30:00.000Z__USD__api-weekly-statistical-bulletin",
+    "id": "2026-01-05T15:00:00.000Z__USD__ism-manufacturing-prices",
+    "title": "ISM Manufacturing Prices",
+    "currency": "USD",
+    "impact": "MEDIUM",
+    "startISO": "2026-01-05T15:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-05T15:15:00.000Z__USD__wards-total-vehicle-sales",
+    "title": "Wards Total Vehicle Sales",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-01-05T15:15:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-06T13:00:00.000Z__USD__fomc-member-barkin-speaks",
+    "title": "FOMC Member Barkin Speaks",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-01-06T13:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-06T14:45:00.000Z__USD__final-services-pmi",
+    "title": "Final Services PMI",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-01-06T14:45:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-06T21:30:00.000Z__USD__api-weekly-statistical-bulletin",
     "title": "API Weekly Statistical Bulletin",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2025-12-30T21:30:00.000Z",
+    "startISO": "2026-01-06T21:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-31T13:30:00.000Z__USD__unemployment-claims",
-    "title": "Unemployment Claims",
+    "id": "2026-01-07T13:15:00.000Z__USD__adp-non-farm-employment-change",
+    "title": "ADP Non-Farm Employment Change",
     "currency": "USD",
     "impact": "HIGH",
-    "startISO": "2025-12-31T13:30:00.000Z",
+    "startISO": "2026-01-07T13:15:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-31T15:30:00.000Z__USD__crude-oil-inventories",
+    "id": "2026-01-07T15:00:00.000Z__USD__ism-services-pmi",
+    "title": "ISM Services PMI",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-01-07T15:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-07T15:00:00.000Z__USD__jolts-job-openings",
+    "title": "JOLTS Job Openings",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-01-07T15:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-07T15:00:00.000Z__USD__factory-orders-mm",
+    "title": "Factory Orders m/m",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-01-07T15:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-07T15:30:00.000Z__USD__crude-oil-inventories",
     "title": "Crude Oil Inventories",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2025-12-31T15:30:00.000Z",
+    "startISO": "2026-01-07T15:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2025-12-31T17:00:00.000Z__USD__natural-gas-storage",
+    "id": "2026-01-07T18:10:00.000Z__USD__fomc-member-bowman-speaks",
+    "title": "FOMC Member Bowman Speaks",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-01-07T18:10:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-08T12:30:00.000Z__USD__challenger-job-cuts-yy",
+    "title": "Challenger Job Cuts y/y",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-01-08T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-08T13:30:00.000Z__USD__unemployment-claims",
+    "title": "Unemployment Claims",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-01-08T13:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-08T13:30:00.000Z__USD__prelim-nonfarm-productivity-qq",
+    "title": "Prelim Nonfarm Productivity q/q",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-01-08T13:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-08T13:30:00.000Z__USD__prelim-unit-labor-costs-qq",
+    "title": "Prelim Unit Labor Costs q/q",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-01-08T13:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-08T13:30:00.000Z__USD__trade-balance",
+    "title": "Trade Balance",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-01-08T13:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-08T15:00:00.000Z__USD__final-wholesale-inventories-mm",
+    "title": "Final Wholesale Inventories m/m",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-01-08T15:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-08T15:30:00.000Z__USD__natural-gas-storage",
     "title": "Natural Gas Storage",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2025-12-31T17:00:00.000Z",
+    "startISO": "2026-01-08T15:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-01-01T13:00:00.000Z__USD__bank-holiday",
-    "title": "Bank Holiday",
-    "currency": "USD",
-    "impact": "UNKNOWN",
-    "startISO": "2026-01-01T13:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-01-02T14:45:00.000Z__USD__final-manufacturing-pmi",
-    "title": "Final Manufacturing PMI",
+    "id": "2026-01-08T20:00:00.000Z__USD__consumer-credit-mm",
+    "title": "Consumer Credit m/m",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-01-02T14:45:00.000Z",
+    "startISO": "2026-01-08T20:00:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-01-03T15:15:00.000Z__USD__fomc-member-paulson-speaks",
-    "title": "FOMC Member Paulson Speaks",
+    "id": "2026-01-09T13:29:00.000Z__USD__building-permits",
+    "title": "Building Permits",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-01-03T15:15:00.000Z",
+    "startISO": "2026-01-09T13:29:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-01-03T19:30:00.000Z__USD__fomc-member-paulson-speaks",
-    "title": "FOMC Member Paulson Speaks",
+    "id": "2026-01-09T13:29:00.000Z__USD__housing-starts",
+    "title": "Housing Starts",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-01-03T19:30:00.000Z",
+    "startISO": "2026-01-09T13:29:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-09T13:30:00.000Z__USD__average-hourly-earnings-mm",
+    "title": "Average Hourly Earnings m/m",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-01-09T13:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-09T13:30:00.000Z__USD__non-farm-employment-change",
+    "title": "Non-Farm Employment Change",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-01-09T13:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-09T13:30:00.000Z__USD__unemployment-rate",
+    "title": "Unemployment Rate",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-01-09T13:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-09T13:30:00.000Z__USD__building-permits",
+    "title": "Building Permits",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-01-09T13:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-09T13:30:00.000Z__USD__housing-starts",
+    "title": "Housing Starts",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-01-09T13:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-09T15:00:00.000Z__USD__prelim-uom-consumer-sentiment",
+    "title": "Prelim UoM Consumer Sentiment",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-01-09T15:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-09T15:00:00.000Z__USD__prelim-uom-inflation-expectations",
+    "title": "Prelim UoM Inflation Expectations",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-01-09T15:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-01-09T18:35:00.000Z__USD__fomc-member-barkin-speaks",
+    "title": "FOMC Member Barkin Speaks",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-01-09T18:35:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   }
