@@ -1,271 +1,253 @@
 [
   {
-    "id": "2026-03-30T14:30:00.000Z__USD__fed-chair-powell-speaks",
-    "title": "Fed Chair Powell Speaks",
+    "id": "2026-04-06T14:00:00.000Z__USD__ism-services-pmi",
+    "title": "ISM Services PMI",
     "currency": "USD",
     "impact": "HIGH",
-    "startISO": "2026-03-30T14:30:00.000Z",
+    "startISO": "2026-04-06T14:00:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-03-30T20:00:00.000Z__USD__fomc-member-williams-speaks",
-    "title": "FOMC Member Williams Speaks",
+    "id": "2026-04-07T12:15:00.000Z__USD__adp-weekly-employment-change",
+    "title": "ADP Weekly Employment Change",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-03-30T20:00:00.000Z",
+    "startISO": "2026-04-07T12:15:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-03-31T13:00:00.000Z__USD__hpi-mm",
-    "title": "HPI m/m",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2026-03-31T13:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-03-31T13:00:00.000Z__USD__sandpcs-composite-20-hpi-yy",
-    "title": "S&P/CS Composite-20 HPI y/y",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2026-03-31T13:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-03-31T13:45:00.000Z__USD__chicago-pmi",
-    "title": "Chicago PMI",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2026-03-31T13:45:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-03-31T14:00:00.000Z__USD__jolts-job-openings",
-    "title": "JOLTS Job Openings",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2026-03-31T14:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-03-31T14:00:00.000Z__USD__cb-consumer-confidence",
-    "title": "CB Consumer Confidence",
+    "id": "2026-04-07T12:30:00.000Z__USD__core-durable-goods-orders-mm",
+    "title": "Core Durable Goods Orders m/m",
     "currency": "USD",
     "impact": "MEDIUM",
-    "startISO": "2026-03-31T14:00:00.000Z",
+    "startISO": "2026-04-07T12:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-03-31T16:00:00.000Z__USD__fomc-member-goolsbee-speaks",
+    "id": "2026-04-07T12:30:00.000Z__USD__durable-goods-orders-mm",
+    "title": "Durable Goods Orders m/m",
+    "currency": "USD",
+    "impact": "MEDIUM",
+    "startISO": "2026-04-07T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-07T14:10:00.000Z__USD__rcmtipp-economic-optimism",
+    "title": "RCM/TIPP Economic Optimism",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-04-07T14:10:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-07T16:35:00.000Z__USD__fomc-member-goolsbee-speaks",
     "title": "FOMC Member Goolsbee Speaks",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-03-31T16:00:00.000Z",
+    "startISO": "2026-04-07T16:35:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-03-31T19:00:00.000Z__USD__fomc-member-barr-speaks",
-    "title": "FOMC Member Barr Speaks",
+    "id": "2026-04-07T19:00:00.000Z__USD__consumer-credit-mm",
+    "title": "Consumer Credit m/m",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-03-31T19:00:00.000Z",
+    "startISO": "2026-04-07T19:00:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-03-31T20:30:00.000Z__USD__api-weekly-statistical-bulletin",
+    "id": "2026-04-07T20:30:00.000Z__USD__api-weekly-statistical-bulletin",
     "title": "API Weekly Statistical Bulletin",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-03-31T20:30:00.000Z",
+    "startISO": "2026-04-07T20:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-03-31T21:10:00.000Z__USD__fomc-member-bowman-speaks",
-    "title": "FOMC Member Bowman Speaks",
+    "id": "2026-04-07T21:50:00.000Z__USD__fomc-member-jefferson-speaks",
+    "title": "FOMC Member Jefferson Speaks",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-03-31T21:10:00.000Z",
+    "startISO": "2026-04-07T21:50:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-01T12:15:00.000Z__USD__adp-non-farm-employment-change",
-    "title": "ADP Non-Farm Employment Change",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2026-04-01T12:15:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-01T12:30:00.000Z__USD__core-retail-sales-mm",
-    "title": "Core Retail Sales m/m",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2026-04-01T12:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-01T12:30:00.000Z__USD__retail-sales-mm",
-    "title": "Retail Sales m/m",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2026-04-01T12:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-01T13:05:00.000Z__USD__fomc-member-musalem-speaks",
-    "title": "FOMC Member Musalem Speaks",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2026-04-01T13:05:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-01T13:10:00.000Z__USD__fomc-member-barr-speaks",
-    "title": "FOMC Member Barr Speaks",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2026-04-01T13:10:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-01T13:45:00.000Z__USD__final-manufacturing-pmi",
-    "title": "Final Manufacturing PMI",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2026-04-01T13:45:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-01T14:00:00.000Z__USD__ism-manufacturing-pmi",
-    "title": "ISM Manufacturing PMI",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2026-04-01T14:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-01T14:00:00.000Z__USD__ism-manufacturing-prices",
-    "title": "ISM Manufacturing Prices",
-    "currency": "USD",
-    "impact": "MEDIUM",
-    "startISO": "2026-04-01T14:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-01T14:00:00.000Z__USD__business-inventories-mm",
-    "title": "Business Inventories m/m",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2026-04-01T14:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-01T14:15:00.000Z__USD__wards-total-vehicle-sales",
-    "title": "Wards Total Vehicle Sales",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2026-04-01T14:15:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-01T14:30:00.000Z__USD__crude-oil-inventories",
+    "id": "2026-04-08T14:30:00.000Z__USD__crude-oil-inventories",
     "title": "Crude Oil Inventories",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-04-01T14:30:00.000Z",
+    "startISO": "2026-04-08T14:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-02T11:30:00.000Z__USD__challenger-job-cuts-yy",
-    "title": "Challenger Job Cuts y/y",
+    "id": "2026-04-08T17:01:00.000Z__USD__10-y-bond-auction",
+    "title": "10-y Bond Auction",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-04-02T11:30:00.000Z",
+    "startISO": "2026-04-08T17:01:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-02T12:30:00.000Z__USD__unemployment-claims",
-    "title": "Unemployment Claims",
+    "id": "2026-04-08T18:00:00.000Z__USD__fomc-meeting-minutes",
+    "title": "FOMC Meeting Minutes",
     "currency": "USD",
     "impact": "HIGH",
-    "startISO": "2026-04-02T12:30:00.000Z",
+    "startISO": "2026-04-08T18:00:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-02T12:30:00.000Z__USD__trade-balance",
-    "title": "Trade Balance",
+    "id": "2026-04-09T12:30:00.000Z__USD__core-pce-price-index-mm",
+    "title": "Core PCE Price Index m/m",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-04-09T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-09T12:30:00.000Z__USD__final-gdp-qq",
+    "title": "Final GDP q/q",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-04-09T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-09T12:30:00.000Z__USD__final-gdp-price-index-qq",
+    "title": "Final GDP Price Index q/q",
+    "currency": "USD",
+    "impact": "MEDIUM",
+    "startISO": "2026-04-09T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-09T12:30:00.000Z__USD__unemployment-claims",
+    "title": "Unemployment Claims",
+    "currency": "USD",
+    "impact": "MEDIUM",
+    "startISO": "2026-04-09T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-09T12:30:00.000Z__USD__personal-income-mm",
+    "title": "Personal Income m/m",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-04-02T12:30:00.000Z",
+    "startISO": "2026-04-09T12:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-02T14:30:00.000Z__USD__natural-gas-storage",
+    "id": "2026-04-09T12:30:00.000Z__USD__personal-spending-mm",
+    "title": "Personal Spending m/m",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-04-09T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-09T14:00:00.000Z__USD__final-wholesale-inventories-mm",
+    "title": "Final Wholesale Inventories m/m",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-04-09T14:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-09T14:30:00.000Z__USD__natural-gas-storage",
     "title": "Natural Gas Storage",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-04-02T14:30:00.000Z",
+    "startISO": "2026-04-09T14:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-03T12:30:00.000Z__USD__average-hourly-earnings-mm",
-    "title": "Average Hourly Earnings m/m",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2026-04-03T12:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-03T12:30:00.000Z__USD__non-farm-employment-change",
-    "title": "Non-Farm Employment Change",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2026-04-03T12:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-03T12:30:00.000Z__USD__unemployment-rate",
-    "title": "Unemployment Rate",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2026-04-03T12:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-03T13:45:00.000Z__USD__final-services-pmi",
-    "title": "Final Services PMI",
+    "id": "2026-04-09T17:01:00.000Z__USD__30-y-bond-auction",
+    "title": "30-y Bond Auction",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-04-03T13:45:00.000Z",
+    "startISO": "2026-04-09T17:01:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-10T12:30:00.000Z__USD__core-cpi-mm",
+    "title": "Core CPI m/m",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-04-10T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-10T12:30:00.000Z__USD__cpi-mm",
+    "title": "CPI m/m",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-04-10T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-10T12:30:00.000Z__USD__cpi-yy",
+    "title": "CPI y/y",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-04-10T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-10T14:00:00.000Z__USD__prelim-uom-consumer-sentiment",
+    "title": "Prelim UoM Consumer Sentiment",
+    "currency": "USD",
+    "impact": "MEDIUM",
+    "startISO": "2026-04-10T14:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-10T14:00:00.000Z__USD__prelim-uom-inflation-expectations",
+    "title": "Prelim UoM Inflation Expectations",
+    "currency": "USD",
+    "impact": "MEDIUM",
+    "startISO": "2026-04-10T14:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-10T14:00:00.000Z__USD__factory-orders-mm",
+    "title": "Factory Orders m/m",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-04-10T14:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-10T18:00:00.000Z__USD__federal-budget-balance",
+    "title": "Federal Budget Balance",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-04-10T18:00:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   }
