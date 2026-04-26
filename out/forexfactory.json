@@ -1,136 +1,280 @@
 [
   {
-    "id": "2026-04-21T12:15:00.000Z__USD__adp-weekly-employment-change",
+    "id": "2026-04-26T23:00:00.000Z__USD__president-trump-speaks",
+    "title": "President Trump Speaks",
+    "currency": "USD",
+    "impact": "MEDIUM",
+    "startISO": "2026-04-26T23:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-28T12:15:00.000Z__USD__adp-weekly-employment-change",
     "title": "ADP Weekly Employment Change",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-04-21T12:15:00.000Z",
+    "startISO": "2026-04-28T12:15:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-21T12:30:00.000Z__USD__core-retail-sales-mm",
-    "title": "Core Retail Sales m/m",
+    "id": "2026-04-28T13:00:00.000Z__USD__hpi-mm",
+    "title": "HPI m/m",
     "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2026-04-21T12:30:00.000Z",
+    "impact": "LOW",
+    "startISO": "2026-04-28T13:00:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-21T12:30:00.000Z__USD__retail-sales-mm",
-    "title": "Retail Sales m/m",
+    "id": "2026-04-28T13:00:00.000Z__USD__sandpcs-composite-20-hpi-yy",
+    "title": "S&P/CS Composite-20 HPI y/y",
     "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2026-04-21T12:30:00.000Z",
+    "impact": "LOW",
+    "startISO": "2026-04-28T13:00:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-21T14:00:00.000Z__USD__fed-chair-designate-warsh-testifies",
-    "title": "Fed Chair-Designate Warsh Testifies",
-    "currency": "USD",
-    "impact": "HIGH",
-    "startISO": "2026-04-21T14:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-21T14:00:00.000Z__USD__pending-home-sales-mm",
-    "title": "Pending Home Sales m/m",
+    "id": "2026-04-28T14:00:00.000Z__USD__cb-consumer-confidence",
+    "title": "CB Consumer Confidence",
     "currency": "USD",
     "impact": "MEDIUM",
-    "startISO": "2026-04-21T14:00:00.000Z",
+    "startISO": "2026-04-28T14:00:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-21T14:00:00.000Z__USD__business-inventories-mm",
-    "title": "Business Inventories m/m",
+    "id": "2026-04-28T14:00:00.000Z__USD__richmond-manufacturing-index",
+    "title": "Richmond Manufacturing Index",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-04-21T14:00:00.000Z",
+    "startISO": "2026-04-28T14:00:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-21T18:30:00.000Z__USD__fomc-member-waller-speaks",
-    "title": "FOMC Member Waller Speaks",
-    "currency": "USD",
-    "impact": "LOW",
-    "startISO": "2026-04-21T18:30:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-21T20:30:00.000Z__USD__api-weekly-statistical-bulletin",
+    "id": "2026-04-28T20:30:00.000Z__USD__api-weekly-statistical-bulletin",
     "title": "API Weekly Statistical Bulletin",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-04-21T20:30:00.000Z",
+    "startISO": "2026-04-28T20:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-22T14:30:00.000Z__USD__crude-oil-inventories",
+    "id": "2026-04-29T12:30:00.000Z__USD__building-permits",
+    "title": "Building Permits",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-04-29T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-29T12:30:00.000Z__USD__core-durable-goods-orders-mm",
+    "title": "Core Durable Goods Orders m/m",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-04-29T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-29T12:30:00.000Z__USD__durable-goods-orders-mm",
+    "title": "Durable Goods Orders m/m",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-04-29T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-29T12:30:00.000Z__USD__goods-trade-balance",
+    "title": "Goods Trade Balance",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-04-29T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-29T12:30:00.000Z__USD__housing-starts",
+    "title": "Housing Starts",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-04-29T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-29T12:30:00.000Z__USD__prelim-wholesale-inventories-mm",
+    "title": "Prelim Wholesale Inventories m/m",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-04-29T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-29T14:30:00.000Z__USD__crude-oil-inventories",
     "title": "Crude Oil Inventories",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-04-22T14:30:00.000Z",
+    "startISO": "2026-04-29T14:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-23T12:30:00.000Z__USD__unemployment-claims",
+    "id": "2026-04-29T18:00:00.000Z__USD__federal-funds-rate",
+    "title": "Federal Funds Rate",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-04-29T18:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-29T18:00:00.000Z__USD__fomc-statement",
+    "title": "FOMC Statement",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-04-29T18:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-29T18:30:00.000Z__USD__fomc-press-conference",
+    "title": "FOMC Press Conference",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-04-29T18:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-30T12:30:00.000Z__USD__advance-gdp-qq",
+    "title": "Advance GDP q/q",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-04-30T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-30T12:30:00.000Z__USD__core-pce-price-index-mm",
+    "title": "Core PCE Price Index m/m",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-04-30T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-30T12:30:00.000Z__USD__employment-cost-index-qq",
+    "title": "Employment Cost Index q/q",
+    "currency": "USD",
+    "impact": "HIGH",
+    "startISO": "2026-04-30T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-30T12:30:00.000Z__USD__advance-gdp-price-index-qq",
+    "title": "Advance GDP Price Index q/q",
+    "currency": "USD",
+    "impact": "MEDIUM",
+    "startISO": "2026-04-30T12:30:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-30T12:30:00.000Z__USD__unemployment-claims",
     "title": "Unemployment Claims",
     "currency": "USD",
     "impact": "MEDIUM",
-    "startISO": "2026-04-23T12:30:00.000Z",
+    "startISO": "2026-04-30T12:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-23T13:45:00.000Z__USD__flash-manufacturing-pmi",
-    "title": "Flash Manufacturing PMI",
+    "id": "2026-04-30T12:30:00.000Z__USD__personal-income-mm",
+    "title": "Personal Income m/m",
     "currency": "USD",
-    "impact": "MEDIUM",
-    "startISO": "2026-04-23T13:45:00.000Z",
+    "impact": "LOW",
+    "startISO": "2026-04-30T12:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-23T13:45:00.000Z__USD__flash-services-pmi",
-    "title": "Flash Services PMI",
+    "id": "2026-04-30T12:30:00.000Z__USD__personal-spending-mm",
+    "title": "Personal Spending m/m",
     "currency": "USD",
-    "impact": "MEDIUM",
-    "startISO": "2026-04-23T13:45:00.000Z",
+    "impact": "LOW",
+    "startISO": "2026-04-30T12:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-23T14:30:00.000Z__USD__natural-gas-storage",
+    "id": "2026-04-30T13:45:00.000Z__USD__chicago-pmi",
+    "title": "Chicago PMI",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-04-30T13:45:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-30T14:00:00.000Z__USD__cb-leading-index-mm",
+    "title": "CB Leading Index m/m",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-04-30T14:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-04-30T14:30:00.000Z__USD__natural-gas-storage",
     "title": "Natural Gas Storage",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-04-23T14:30:00.000Z",
+    "startISO": "2026-04-30T14:30:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   },
   {
-    "id": "2026-04-24T14:00:00.000Z__USD__revised-uom-consumer-sentiment",
-    "title": "Revised UoM Consumer Sentiment",
-    "currency": "USD",
-    "impact": "MEDIUM",
-    "startISO": "2026-04-24T14:00:00.000Z",
-    "tz": "UTC",
-    "source": "ff_weekly_xml"
-  },
-  {
-    "id": "2026-04-24T14:00:00.000Z__USD__revised-uom-inflation-expectations",
-    "title": "Revised UoM Inflation Expectations",
+    "id": "2026-05-01T13:45:00.000Z__USD__final-manufacturing-pmi",
+    "title": "Final Manufacturing PMI",
     "currency": "USD",
     "impact": "LOW",
-    "startISO": "2026-04-24T14:00:00.000Z",
+    "startISO": "2026-05-01T13:45:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-05-01T14:00:00.000Z__USD__ism-manufacturing-pmi",
+    "title": "ISM Manufacturing PMI",
+    "currency": "USD",
+    "impact": "MEDIUM",
+    "startISO": "2026-05-01T14:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-05-01T14:00:00.000Z__USD__ism-manufacturing-prices",
+    "title": "ISM Manufacturing Prices",
+    "currency": "USD",
+    "impact": "MEDIUM",
+    "startISO": "2026-05-01T14:00:00.000Z",
+    "tz": "UTC",
+    "source": "ff_weekly_xml"
+  },
+  {
+    "id": "2026-05-01T14:15:00.000Z__USD__wards-total-vehicle-sales",
+    "title": "Wards Total Vehicle Sales",
+    "currency": "USD",
+    "impact": "LOW",
+    "startISO": "2026-05-01T14:15:00.000Z",
     "tz": "UTC",
     "source": "ff_weekly_xml"
   }
